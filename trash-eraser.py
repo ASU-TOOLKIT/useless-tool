@@ -103,7 +103,7 @@ class main:
 					{
 						"album_name":i.find("a",href=True).text,
 						"album_url":self._url.format(i.find("a",href=True)["href"]),
-						"album_count":int(i.find("div").text.split(" ")[0])
+						"album_count":i.find("div").text.split(" ")[0]
 					}
 				)
 		if (len(albums) !=0):
