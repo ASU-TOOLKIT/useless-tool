@@ -99,14 +99,13 @@ class main:
 		bs=bs4.BeautifulSoup(self._r.get(url).text,"html.parser")
 		for i in bs.find_all("li"):
 			if ("/albums/" in str(i)):
-				if i.find("a",href=True).text in ["p","pp"]:
-					albums.append(
+				albums.append(
 					{
 						"album_name":i.find("a",href=True).text,
 						"album_url":self._url.format(i.find("a",href=True)["href"]),
 						"album_count":int(i.find("div").text.split(" ")[0])
 					}
-					)
+				)
 		if (len(albums) !=0):
 			print("\t[ You Have %s Albums ]\n"%len(albums))
 			for i in enumerate(albums):
