@@ -1,4 +1,4 @@
-# copyright by Deray
+# copyright 2020 by Deray
 # dm for business: https://instagram.com/reyy05_?igshid=1di5b7v29n6l8
 
 import os
