@@ -59,16 +59,16 @@ class download:
 	@staticmethod
 	def _tanya(output=None):
 		print("*: SAVED AS: %s"%output)
-		g=raw_input("?: view (y/n) > ")
+		g=_input_url("?: view (y/n) > ")
 		if g=="y":
 			subprocess.Popen(["am","start","file://"+output]).wait()
 			print("\n* finisned.");start()
-		else:exit("\n*: finished.");raw_input("press enter to again...");start()
+		else:exit("\n*: finished.");_input_url("press enter to again...");start()
 	
 	@staticmethod
 	def ask_before_download(url=None, json=None):
 		global inp
-		c = raw_input("?: [S]ee video or [D]ownload or [B]ack? [S/D/B]> ").lower()
+		c = _input_url("?: [S]ee video or [D]ownload or [B]ack? [S/D/B]> ").lower()
 		if c=="d":
 			subprocess.Popen([
 				"curl","-o",
