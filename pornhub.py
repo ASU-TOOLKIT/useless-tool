@@ -2,7 +2,7 @@
 # 1.1.1.1 https://play.google.com/store/apps/details?id=com.cloudflare.onedotonedotonedotone
 # Copyright by https://instagram.com/reyy05_?igshid=19p0d4zfr5yky 
 
-import requests,re,os,sys,re,json,subprocess
+import requests,re,os,sys,re,json,subprocess,bs4
 
 inp=None
 
@@ -63,7 +63,7 @@ class download:
 		if g=="y":
 			subprocess.Popen(["am","start","file://"+output]).wait()
 			print("\n* finisned.");start()
-		else:exit("\n*: finished.");_input_url("press enter to again...");start()
+		else:print("\n*: finished.");_input_url("press enter to again...");start()
 	
 	@staticmethod
 	def ask_before_download(url=None, json=None):
@@ -82,22 +82,66 @@ class download:
 				stdout=subprocess.PIPE,
 					 stdin=subprocess.PIPE,stderr=subprocess.PIPE).wait()
 			download().ask_before_download(url=url, json=json)
-				
 
+def xnxx(url=None):
+	try:
+		result=[]
+		b=bs4.BeautifulSoup(
+			requests.get(url).text,"html.parser")
+		for i in b.find_all("a",href=True):
+			if "mp4" in i["href"]:
+				if "qual" in i.text.lower():
+					result.append(
+						{
+							"url":i["href"],
+							"text":i.text.lower().replace("view","").replace(" qual","")
+						}
+					)
+		if len(result) !=0:
+			return {"message":"success","result":result}
+		else:
+			return {"message":"error"}
+	except Exception as e:
+		return {"message":"error: %s"%e}
+
+def mulai(type=None):
+	global inp
+	inp=_input_url('?: video url: ') 
+	if inp=="":mulai(type=type)
+	elif inp=="back":start()
+	else:
+		if type=="pornhub":
+			json=download().get_download_list(url=inp)
+			if json["message"]=="error":
+				print("*: error: %s"%json["error_message"]);mulai(type=type)
+			else:
+				download()._input_url_to_download(
+					json=download().get_download_list(url=inp)["result"])
+		elif type=="xnxx":
+			json=xnxx(url=inp)
+			if "error" in json["message"]:
+				print("*: error: %s"%json["message"]);mulai(type=type)
+			else:
+				download()._input_url_to_download(json=json["result"])
+	
 def start():
 	global inp
 	os.system("clear")
-	print("\t\t[ Pornhub.com downloader ]\n\n* use 1.1.1.1 apk to use this tool\n* https://play.google.com/store/apps/details?id=com.cloudflare.onedotonedotonedotone\n\n")
+	print("\t\t[ bokep downloader ]\n\n* use 1.1.1.1 apk to use this tool\n* https://play.google.com/store/apps/details?id=com.cloudflare.onedotonedotonedotone\n\n")
+	print("  1. pornhub\n  2. xnxx\n  3. xvideos\n")
 	while True:
-		inp=_input_url("?: video url: ")
-		if (inp==""):continue
-		json=download().get_download_list(url=inp)
-		if json["message"]=="error":
-			print("*: error: %s"%json["error_message"])
-		else:
-			download()._input_url_to_download(
-				json=download().get_download_list(url=inp)["result"])
-			break
+		inp=_input_url("?: menu: ")
+		if inp=="":continue
+		elif inp in ["1","01"]:
+			print("*: press 'back' to back.")
+			mulai(type="pornhub")
+		elif inp in ["2","02"]:
+			print("*: press 'back' to back.")
+			mulai(type="xnxx")
+		elif inp in ["3","03"]:
+			print("*: press 'back' to back.")
+			mulai(type="xnxx")
+		else:print("*: wrong input.")
 
 if __name__=="__main__":
 	start()
